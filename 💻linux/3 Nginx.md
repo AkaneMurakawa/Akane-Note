@@ -16,8 +16,6 @@ Nginx教程：https://www.yiibai.com/nginx/nginx-advantages.html#article-start
 
 *Nginx* (engine x) 是一个高性能的[HTTP](https://baike.baidu.com/item/HTTP)和[反向代理](https://baike.baidu.com/item/反向代理/7793488)web服务器，同时也提供了IMAP/POP3/SMTP[服务](https://baike.baidu.com/item/服务/100571)。
 
-
-
 Nginx是**C编程**语言编写的，拥有自己的库，其标准模块不会超出系统的C库，除了**zlib，PCRE和OpenSSL**之外。如果不需要，或者由于潜在的许可证冲突，可以选择将其从**./configurate构建中**排除。
 
 
@@ -28,6 +26,7 @@ Nginx是**C编程**语言编写的，拥有自己的库，其标准模块不会�
 - 负载均衡
 - HTTP服务器(包含动静分离)
 - 正向代理
+- 虚拟主机
 
 
 
@@ -233,14 +232,14 @@ http {
         add_header 'Access-Control-Expose-Headers' 'Content-Length,Content-Range';
 
 
-        # 匹配url    
+        # 匹配url，如访问http://127.0.0.1/，这里配置就是/  
         location / {
-            # root路径
+            # root路径，例如：/var/data/html
             root   html;
             
-            index  index.html index.htm;
+            index  index.html index.htm; # 默认的主页
             deny 172.168.22.11;   # 禁止访问的ip地址，可以为all
-         allow 172.168.33.44； # 允许访问的ip地址，可以为all
+         	allow 172.168.33.44； # 允许访问的ip地址，可以为all
             
             # 返回指定状态码
             # return 200;
@@ -568,9 +567,9 @@ upstream test{
 
 ## 9. Tengine
 
-Tengine完全兼容Nginx，因此可以参照Nginx的方式来配置Tengine
+Tengine完全兼容Nginx，因此可以参照Nginx的方式来配置Tengine。Tengine网站中也有Nginx中文文档
 
-http://tengine.taobao.org/documentation_cn.html
+http://tengine.taobao.org/documentation_cn.html 
 
 
 
