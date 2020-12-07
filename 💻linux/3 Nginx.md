@@ -1,4 +1,4 @@
-# 3 Nginx
+# Nginx
 
 ## 1. 认识Nginx
 
@@ -9,6 +9,8 @@ Nginx：http://nginx.org/   http://nginx.org/en/docs/
 Nginx教程：https://www.yiibai.com/nginx/nginx-advantages.html#article-start
 
 万字详解： https://juejin.im/post/5ea931866fb9a043815146fb
+
+马士兵：[https://github.com/bjmashibing/InternetArchitect/blob/master/04%20Nginx%20Tengine/readme.md](https://github.com/bjmashibing/InternetArchitect/blob/master/04 Nginx Tengine/readme.md)
 
 
 
@@ -153,9 +155,11 @@ location [ = | ~ | ~* | ^~] uri {
 
 Nginx 有一些常用的全局变量，你可以在配置的任何位置使用它们
 
+注意：**worker_processes \* worker_connections就是支持的最大连接数**
+
 ```
 #user  nobody;
-worker_processes  1;
+worker_processes  1; # 多少个工作进程
 
 # 错误日志路径
 #error_log  logs/error.log;
@@ -168,14 +172,14 @@ worker_processes  1;
 
 events {
     use epoll;     # 使用epoll的I/O模型(如果你不知道Nginx该使用哪种轮询方法，会自动选择一个最适合你操作系统的)
-    worker_connections 1024;   # 每个进程允许最大并发数
+    worker_connections 1024;   # 每个进程允许最大并发数，结合前面worker_processes * worker_connections就是支持的最大连接数
 }
 
 
 # 虚拟服务器 http块
 http {
-    include       mime.types;
-    default_type  application/octet-stream;
+    include       mime.types; # 支持的文件类型
+    default_type  application/octet-stream; # 默认的类型
 
     # $表示变量 可以使用set，map和geo指令定义自定义变量
     # 设置访问日志格式
@@ -187,8 +191,9 @@ http {
     #access_log  logs/access.log  main;
     
     # 默认情况下，NGINX会自动处理文件传输，并在发送文件之前将其复制到缓冲区中
+    # on类似Ctrl+X off类型Ctrl+C
     sendfile        on;
-    # 在一个数据包中发送HTTP响应头
+    # 在一个数据包中发送HTTP响应头，打开优化网络传输
     #tcp_nopush     on;
 
     # 超时时间
@@ -558,3 +563,18 @@ upstream test{
         }  
     }
 ```
+
+
+
+## 9. Tengine
+
+Tengine完全兼容Nginx，因此可以参照Nginx的方式来配置Tengine
+
+http://tengine.taobao.org/documentation_cn.html
+
+
+
+## 10. 其它
+
+Nginx、Apache Httpd、 IIS
+

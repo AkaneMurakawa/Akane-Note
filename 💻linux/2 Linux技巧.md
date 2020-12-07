@@ -35,3 +35,11 @@ threadid=$(top -Hbn 1 -p ${processid} | grep java | head -n1 | awk '{ print $1}'
 sudo /usr/local/src/jdk1.8.0_152/bin/jstack $processid | grep "0x$threadid" -A10 --color;
 ```
 
+
+
+### 3 系统配置
+
+```
+/proc/sys
+```
+
