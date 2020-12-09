@@ -43,3 +43,8 @@ sudo /usr/local/src/jdk1.8.0_152/bin/jstack $processid | grep "0x$threadid" -A10
 /proc/sys
 ```
 
+**可以打开的文件句柄数是多少**
+
+```
+–$ cat /proc/sys/fs/file-max
+```

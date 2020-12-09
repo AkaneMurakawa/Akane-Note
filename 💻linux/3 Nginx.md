@@ -2,9 +2,9 @@
 
 ## 1. 认识Nginx
 
-Nginx：http://nginx.org/   http://nginx.org/en/docs/
+Nginx：http://nginx.org/ 、  http://nginx.org/en/docs/
 
-中文文档：https://www.nginx.cn/doc/
+中文文档：https://www.nginx.cn/doc/、http://tengine.taobao.org/nginx_docs/cn/docs/
 
 Nginx教程：https://www.yiibai.com/nginx/nginx-advantages.html#article-start
 
@@ -22,13 +22,22 @@ Nginx是**C编程**语言编写的，拥有自己的库，其标准模块不会�
 
 ## 2. Nginx能做什么
 
-- 反向代理
+- 反向代理（服务器）
+- 正向代理
 - 负载均衡
 - HTTP服务器(包含动静分离)
-- 正向代理
 - 虚拟主机
 
 
+
+**Nginx解决的问题**
+
+- 高并发
+- 高可用
+- 负载均衡
+- 虚拟主机
+- 伪静态
+- 动静分离
 
 ## 3. 安装
 
@@ -85,9 +94,7 @@ systemctl status nginx   # 查看 Nginx 运行状态
 
 使用configure命令配置构建。 它定义了系统的各个方面，包括允许使用nginx进行连接处理的方法。 最后它创建一个Makefile。 configure命令支持以下参数：
 
-**--prefix = path** **- 定义将保留服务器文件的目录**。 这个同一个目录也将用于由configure(除了库源的路径)和nginx.conf配置文件中设置的所有相关路径。 它默认设
-
-置为/usr/local/nginx目录。
+**--prefix = path** **- 定义将保留服务器文件的目录**。 这个同一个目录也将用于由configure(除了库源的路径)和nginx.conf配置文件中设置的所有相关路径。 它默认设置为/usr/local/nginx目录。
 
 更多参数设置见：https://www.yiibai.com/nginx/configure.html#article-start
 
@@ -110,6 +117,8 @@ ps -ax | grep nginx
 
 
 
+## 6. nginx.conf
+
 ```
 main        # 全局配置，对全局生效
 ├── events  # 配置影响 Nginx 服务器或与用户的网络连接
@@ -126,16 +135,16 @@ main        # 全局配置，对全局生效
 
 
 
-## 6. nginx.conf
-
 nginx由配置文件中指定的指令控制的模块组成，指令分为：
 
 - 简单指令，以分号(;)结尾
 - 块指令，以大括号({开始，以})结束
 
+
+
+**location：匹配url**
+
 如果块指令可以在大括号内部有其他指令，则称为上下文(例如：events，http，server和location)。
-
-
 
 ```
 location [ = | ~ | ~* | ^~] uri {
@@ -145,8 +154,8 @@ location [ = | ~ | ~* | ^~] uri {
 
 - = 精确匹配路径，用于不含正则表达式的 uri 前，如果匹配成功，不再进行后续的查找；
 - ^~ 用于不含正则表达式的 uri； 前，表示如果该符号后面的字符是最佳匹配，采用该规则，不再进行后续的查找；
-- ~ 表示用该符号后面的正则去匹配路径，区分大小写；
-- ~* 表示用该符号后面的正则去匹配路径，不区分大小写。跟 ~ 优先级都比较低，如有多个location的正则能匹配的话，则使用正则表达式最长的那个；
+- ~ 表示用该符号后面的**正则**去匹配路径，**区分大小写**；
+- ~* 表示用该符号后面的**正则**去匹配路径，**不区分大小写**。跟 ~ 优先级都比较低，如有多个location的正则能匹配的话，则使用正则表达式最长的那个；
 
 
 
@@ -158,7 +167,7 @@ Nginx 有一些常用的全局变量，你可以在配置的任何位置使用�
 
 ```
 #user  nobody;
-worker_processes  1; # 多少个工作进程
+worker_processes  1; # 多少个工作进程，建议设置为等于CPU总核心数
 
 # 错误日志路径
 #error_log  logs/error.log;
@@ -166,6 +175,7 @@ worker_processes  1; # 多少个工作进程
 #error_log  logs/error.log  notice;
 #error_log  logs/error.log  info;
 
+#进程文件
 #pid        logs/nginx.pid;
 
 
@@ -191,8 +201,9 @@ http {
     
     # 默认情况下，NGINX会自动处理文件传输，并在发送文件之前将其复制到缓冲区中
     # on类似Ctrl+X off类型Ctrl+C
+    # 是否调用sendfile函数来输出文件，对于普通应用设为 on，如果用来进行下载等应用磁盘IO重负载应用，可设置为off，以平衡磁盘与网络I/O处理速度，降低系统的负载。注意：如果图片显示不正常把这个改成off。
     sendfile        on;
-    # 在一个数据包中发送HTTP响应头，打开优化网络传输
+    # 在一个数据包中发送HTTP响应头，打开优化网络传输 （仅在sendfile开启时有效）
     #tcp_nopush     on;
 
     # 超时时间
@@ -205,12 +216,14 @@ http {
     # gzip_types text/plain application/xml;
     # 压缩的响应的最小长度，默认20
     # gzip_min_length 20;
+    # 设置系统获取几个单位的缓存用于存储gzip的压缩结果数据流。 例如 4 4k 代表以4k为单位，按照原始数据大小以4k为单位的4倍申请内存
+    # gzip_buffers 4 16k
     # gzip_proxied no-cache no-store private expired auth
     
     # 支持解压缩
     # gunzip on;
 
-    # 启动一个服务器 server块
+    # 启动一个服务器，虚拟主机 server块
     server {
         listen       80;
         server_name  localhost;
@@ -238,6 +251,7 @@ http {
             root   html;
             
             index  index.html index.htm; # 默认的主页
+            # IP访问控制
             deny 172.168.22.11;   # 禁止访问的ip地址，可以为all
          	allow 172.168.33.44； # 允许访问的ip地址，可以为all
             
@@ -364,19 +378,6 @@ server {
 
 https://www.yiibai.com/nginx/nginx-main-use-scenes.html
 
-
-
-正向代理和反向代理：
-
-简单概括下就是，**服务器代理**被称为反向代理，**客户端代理**被称为正向代理。
-
-
-
-- 举个正向代理的例子，**我(客户端)**没有绿码出不了门，但是**朋友(代理)**有，**我(客户端)**让**朋友(代理)**去超市买瓶水，而对于**超市(服务器)**来讲，他们感知不到**我(客户端)**的存在，这就是正向代理。  
-- 举个反向代理例子，**我(客户端)**让**朋友(代理)**去给我买瓶水，并没有说去哪里买，反正**朋友(代理)**买回来了，对于**我(客户端)**来讲，**我(客户端)**感知不到**超市(服务器)**的存在，这就是反向代理。
-
-
-
 修改配置后重新读取配置
 
 ```
@@ -385,9 +386,39 @@ nginx -s reload
 
 
 
+### 8.0 虚拟主机
+
+虚拟主机是一种特殊的软硬件技术，它可以将网络上的每一台计算机分成多个虚拟主机，每个虚拟主机可以独立对外提供www服务，这样就可以实现一台主机对外提供多个web服务，每个虚拟主机之间是独立的，互不影响的
+
+```
+http{
+	server{
+		#表示一个虚拟主机
+	}
+}
+
+```
+
+nginx支持三种类型的虚拟主机配置
+
+- 基于ip的虚拟主机， （一块主机绑定多个ip地址）
+- 基于域名的虚拟主机（servername）
+- 基于端口的虚拟主机（listen如果不写ip端口模式）
+
 ### 8.1 反向代理
 
+正向代理和反向代理：
+
+简单概括下就是，**服务器代理**被称为反向代理，**客户端代理**被称为正向代理。
+
+- 举个正向代理的例子，**我(客户端)**没有绿码出不了门，但是**朋友(代理)**有，**我(客户端)**让**朋友(代理)**去超市买瓶水，而对于**超市(服务器)**来讲，他们感知不到**我(客户端)**的存在，这就是正向代理。  
+- 举个反向代理例子，**我(客户端)**让**朋友(代理)**去给我买瓶水，并没有说去哪里买，反正**朋友(代理)**买回来了，对于**我(客户端)**来讲，**我(客户端)**感知不到**超市(服务器)**的存在，这就是反向代理。
+
+
+
 反向代理(Reverse Proxy)方式是指以代理服务器来接受internet上的连接请求，然后将**请求转发**给内部网络上的服务器，并将从服务器上得到的结果返回给internet上请求连接的客户端
+
+简单来说：客户端感知不到服务器
 
 ```
 server {  
@@ -437,9 +468,7 @@ resolver 114.114.114.114 8.8.8.8;
 
 Nginx目前支持自带3种负载均衡策略，还有2种常用的第三方策略。
 
-
-
-1）RR(默认)
+1）RR(默认)轮询
 
 ```
  # 配置负载均衡
@@ -454,7 +483,8 @@ server {
     client_max_body_size 1024M;
 
     location / {
-        proxy_pass http://test;
+	    # 代理到服务器，负载均衡。myserver对应上面的变量
+        proxy_pass http://myserver;
         proxy_set_header Host $host:$server_port;
     }
 }
@@ -464,9 +494,27 @@ server {
 
 2）权重
 
+```
+upstream httpds {
+    server 127.0.0.1:8050       weight=10 down;
+    server 127.0.0.1:8060       weight=1;
+    server 127.0.0.1:8060       weight=1 backup;
+    server 127.0.0.1:8050    weight=5  max_conns=800;
+    server 127.0.0.1:8050    weight=1  max_fails=3  fail_timeout=30;
+}
+```
+
+- down：表示当前的server暂时不参与负载
+- weight：默认为1.weight越大，负载的权重就越大。
+- backup： 其它所有的非backup机器down或者忙的时候，请求backup机器。
+- max_conns：设置最大连接数，防止挂掉
+- max_fails=3 fail_timeout=30s代表在30秒内请求某一应用失败3次，认为该应用宕机，后等待30秒，这期间内不会再把新请求发送到宕机应用
+
 
 
 3）ip_hash
+
+**hash需要注意服务新增或删除问题，容器造成数据倾斜**
 
 ```
 upstream myserver {
@@ -494,7 +542,7 @@ upstream backend {
 
 5）url_hash(第三方)
 
-按访问url的hash结果来分配请求，使每个url定向到同一个后端服务器，后端服务器为缓存时比较有效。 在upstream中加入hash语句，server语句中不能写入weight等其他的参数，hash_method是使用的hash算法。注：hash需要注意服务新增或删除问题
+按访问url的hash结果来分配请求，使每个url定向到同一个后端服务器，后端服务器为缓存时比较有效。 在upstream中加入hash语句，server语句中不能写入weight等其他的参数，hash_method是使用的hash算法。注：**hash需要注意服务新增或删除问题，容器造成数据倾斜**
 
 ```
  upstream backend {
@@ -507,7 +555,7 @@ upstream backend {
 
 
 
-### 8.4 HTTP服务器
+### 8.4 HTTP服务器（虚拟主机）
 
 Nginx本身也是一个静态资源的服务器
 
@@ -551,7 +599,7 @@ upstream test{
             root    e:/wwwroot;  
         }  
 
-        # 所有动态请求都转发给tomcat处理  
+        # 所有动态请求都转发给tomcat处理，test对应上面的upstream变量  
         location ~ .(jsp|do)$ {  
             proxy_pass  http://test;  
         }  
@@ -564,6 +612,56 @@ upstream test{
 ```
 
 
+
+### 8.6 IP访问控制
+
+```
+location  {
+	   deny  IP /IP段
+	   deny  192.168.1.109;
+	   allow 192.168.1.0/24;192.168.0.0/16;192.0.0.0/8
+	}
+```
+
+### 8.7 用户认证访问
+
+模块ngx_http_auth_basic_module 允许使用“HTTP基本认证”协议验证用户名和密码来限制对资源的访问。
+
+```
+location ~ (.*)\.avi$ {
+    auth_basic  "closed site";
+    auth_basic_user_file conf/users;
+}
+```
+
+**httpd-tools**
+
+```
+yum install httpd
+htpasswd -c -d /usr/local/users xiaoming
+```
+
+
+
+### 8.8 nginx访问状态监控
+
+```
+location /basic_status {
+    stub_status on;
+}
+```
+
+
+
+### 8.9 健康检查模块
+
+配置一个status的location
+
+```
+location /status {
+    check_status;
+}
+```
 
 ## 9. Tengine
 
