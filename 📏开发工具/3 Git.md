@@ -138,7 +138,7 @@ git rm file （删除文件）
 git checkout -- file (丢弃工作区的修改，注意file和-之间有空格。我们还没git add时，这时我们还是在工作区。checkout：结账离开。)
 ```
 
-###  
+
 
 ### 2.2 远程仓库
 
@@ -390,4 +390,12 @@ git fetch [bookmark] （从仓库书签中下载所有的历史）
 git merge [bookmark]/[branch] （连接书签分支到当前的分支）
 git push [alias] [branch]  （上传所有分支到github）
 git pull （下载远程库更新的东西）
+```
+
+
+
+### 2.10 忽略大小写
+
+```
+git config core.ignorecase false
 ```
