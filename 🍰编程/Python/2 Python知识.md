@@ -7,6 +7,9 @@
 ```
 mkvirtualenv flask_py
 mkvirtualenv flask_py -p python3  // p: path
+workon flask_py // 切换虚拟环境
+deactivate // 退出虚拟环境
+
 pip install flask=0.10.1
 pip list // 查看安装了什么安装包
 ```
@@ -19,6 +22,7 @@ pip 是 Python 包管理工具
 
 ```
 sudo apt-get install python-pip
+
 ```
 
 
@@ -26,8 +30,6 @@ sudo apt-get install python-pip
 ### 1.3 site-package是什么？
 
 python包的存储
-
-
 
 
 
@@ -43,6 +45,7 @@ pip freeze > requirements.txt
 
 ```
 pip install -r requirements.txt
+python3 -m pip install nodejs // 指定python3的pip安装
 ```
 
 
