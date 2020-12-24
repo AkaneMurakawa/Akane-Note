@@ -72,6 +72,16 @@ select DATE_FORMAT(create_time,'%Y-%m-%d') 日期
 from order_info
 where create_time >= '2020-01-01' and status='C'
 group by DATE_FORMAT(create_time,'%Y-%m-%d')
+
+
+-- 按月统计
+select 
+  month(create_time) AS 月份
+  ,count(DISTINCT order_no) AS 单量
+from order_info
+where create_time >= '2020-01-01' and status='C'
+group by month(complete_time)
+
 ```
 
 
