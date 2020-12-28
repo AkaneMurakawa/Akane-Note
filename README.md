@@ -1,6 +1,5 @@
 # Akane Note
 
-
 ### 项目由来
 
 本仓库是个人的学习笔记，内容来源于个人理解或网上分享。
@@ -32,6 +31,20 @@
 
 
 ### 关于
+
+<p align="center">
+<img src="https://github-readme-stats.vercel.app/api?username=AkaneMurakawa&show_icons=true&theme=tokyonigh" alt="my github stats" width="420"/>&nbsp;
+  <img src="https://github-readme-stats.vercel.app/api/top-langs/?username=AkaneMurakawa&layout=compact&theme=tokyonigh" alt="languages" height="165">
+</p>
+
+<p align="center">
+    <img src="https://devicon.dev/devicon.git/icons/ubuntu/ubuntu-plain.svg" width="25px" height="25px"/>
+    <img src="https://devicon.dev/devicon.git/icons/c/c-original.svg" width="25px" height="25px"/>
+    <img src="https://devicon.dev/devicon.git/icons/cplusplus/cplusplus-original.svg" width="25px" height="25px"/>
+    <img src="https://devicon.dev/devicon.git/icons/python/python-original.svg" width="25px" height="25px"/>
+    <img src="https://devicon.dev/devicon.git/icons/java/java-original.svg" width="25px" height="25px"/>
+    <img src="https://devicon.dev/devicon.git/icons/github/github-original.svg" width="25px" height="25px"/>
+</p>
 
 喜欢计算机、游戏、音乐、动画。一个大学时期无意中接触了C语言，后来又接触了Python、C++，最后莫名其妙地走上了编程工作的Java程序员。
 
