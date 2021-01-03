@@ -1,4 +1,4 @@
-# 2 RabbitMQ
+# RabbitMQ
 
 RabbitMQ是一个由erlang语言开发的AMQP的开源实现。
 
@@ -12,8 +12,6 @@ RabbitMQ是一个由erlang语言开发的AMQP的开源实现。
 
 
 ## 概念
-
-
 
 ### 消息服务中的概念
 
@@ -104,13 +102,81 @@ Exchange  + Routing Key + Queue确定唯一路由路线
 
 #### Fanout Exchange
 
-每个发送到fanout类型交换器的消息，都会分到所有绑定的队列上。fanout交换器不处理路由键，只是简单的将队列绑定到交换器上。类似于我们的广播，每一个人都可以接收。fanout类型转发消息是最快的。
+每个发送到fanout类型交换器的消息，都会分到所有绑定的队列上。fanout交换器不处理路由键，只是简单的将队列绑定到交换器上。类似于我们的**广播**，每一个人都可以接收。fanout类型转发消息是最快的。
 
 
 
 #### Topic Exchange
 
-topic交换器通过模式匹配分配消息的路由键属性，将路由键和某个模式进行匹配，此时队列需要绑定到一个模式上。在这里可以使用两个通配符，#匹配0或多个单词，*匹配一个单词。
+topic交换器通过模式匹配分配消息的路由键属性，将路由键和某个模式进行匹配，此时队列需要绑定到一个模式上。在这里可以使用两个**通配符**，#匹配0或多个单词，*匹配一个单词。
+
+
+
+### 消息限流
+
+其实就是指定并发数量
+
+```properties
+spring.rabbitmq.listener.simple.prefetch=5
+```
+
+
+
+### TTL消息/队列
+
+`TTL`是Time To Live的缩写，也就是生存时间的意思，`RabbitMQ`支持消息的过期时间，在消息发送时可以进行指定，也支持队列的过期时间，从消息入队列开始计算，只要超过了队列的超时时间配置，那么**消息会自动的清除**。
+
+
+
+设置参数：x-message-ttl
+
+```java
+  // TTL队列示例
+    @Bean
+    public Queue ttlQueue() {
+        Map<String, Object> arguments = new HashMap<>();
+        // 设置3s过期
+        arguments.put("x-message-ttl", 3000);
+        return new Queue("topicQueue1",false,false,false, arguments);
+    }
+```
+
+
+
+### DLX死信队列
+
+https://www.cnblogs.com/he-erduo/p/13605911.html
+
+当一条消息：
+
+- 消费被拒绝（basic.reject/basic.nack）并且requeue=false
+- **TTL过期**
+- 要进入的队列达到最大长度
+
+这三种情况，就可以判定一条消息死了，**这种消息如果我们没有做处理，它就会被自动删除。**
+
+设置了一个队列中的消息死亡后的去处，就等于消息死亡后给它不把它删掉而是做一次**转发**，发到其他`Exchange`去。
+
+
+
+设置参数：x-dead-letter-exchange
+
+```java
+    // DLX队列示例
+    @Bean
+    public Queue dlxQueue() {
+        Map<String, Object> arguments = new HashMap<>();
+        // 指定消息死亡后发送到ExchangeName="dlx.exchange"的交换机去
+        arguments.put("x-dead-letter-exchange","dlx.exchange");
+        return new Queue("topicQueue1", false, false, false, arguments);
+    }
+```
+
+
+
+### 延时队列
+
+RabbitMQ中没有延时队列，但是**TTL+DLX**就能组成一个延时队列。
 
 
 

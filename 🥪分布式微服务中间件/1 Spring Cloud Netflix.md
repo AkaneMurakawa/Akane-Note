@@ -1,6 +1,13 @@
-# 深入学习Spring Cloud Netflix
+# Spring Cloud Netflix
 
-Spring Cloud Netflix通过自动配置和绑定到Spring环境和其他Spring编程模型的习惯方式来为Spring Boot应用程序提供Netflix OSS集成。通过几个简单的注释，您可以快速启用和配置应用程序中的常见模式，并通过经过测试的Netflix组件构建大型分布式系统。提供的模式包括服务发现（Eureka），断路器（Hystrix），智能路由（Zuul）和客户端负载平衡（Ribbon）。
+Spring Cloud Netflix通过自动配置和绑定到Spring环境和其他Spring编程模型的习惯方式来为Spring Boot应用程序提供Netflix OSS集成。通过几个简单的注释，您可以快速启用和配置应用程序中的常见模式，并通过经过测试的Netflix组件构建大型分布式系统。
+
+提供的模式包括
+
+- 服务发现（Eureka）
+- 断路器（Hystrix）
+- 智能路由（Zuul）
+- 客户端负载平衡（Ribbon）
 
 
 
@@ -139,10 +146,6 @@ public @interface FeignClient {
 
 
 
-
-
-
-
 ## 服务雪崩
 
 推荐阅读：[服务雪崩效应](https://blog.csdn.net/syilt/article/details/95035435)
@@ -178,8 +181,6 @@ public @interface FeignClient {
 - 改进缓存模式
 - 服务自动扩容
 - 服务调用者降级服务
-
-
 
 
 
