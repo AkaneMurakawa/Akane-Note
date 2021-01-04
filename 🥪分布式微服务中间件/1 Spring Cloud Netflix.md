@@ -146,6 +146,47 @@ public @interface FeignClient {
 
 
 
+### Feign template special string, won't fix
+
+see: https://github.com/OpenFeign/feign/pull/1043
+
+> The spec states that we should ignore any `undefined` values. While your changes appear to fix the issue, it's only masking it. The real fix belongs in the `expand` functions. In particular, we need to return a special value when an expression is unresolved and not an empty string.
+>
+> I suggest that, if you are still interested, look at `Template`, specifically lines 88 - 91. We should probably return a special value when `resolvedExpression` is `null`. Take a look and let me know. If you are unsure, I can help
+
+
+
+- ```
+  /* add the uri to result */
+  resolved.uri(uri.toString());
+  ```
+
+- feign.RequestTemplate#extractQueryTemplates
+
+  - ```java
+    private void extractQueryTemplates(String queryString, boolean append) {
+      /* split the query string up into name value pairs */
+      Map<String, List<String>> queryParameters =
+          Arrays.stream(queryString.split("&"))
+              .map(this::splitQueryParameter)
+              .collect(Collectors.groupingBy(
+                  SimpleImmutableEntry::getKey,
+                  LinkedHashMap::new,
+                  Collectors.mapping(Entry::getValue, Collectors.toList())));
+    
+      /* add them to this template */
+      if (!append) {
+        /* clear the queries and use the new ones */
+        this.queries.clear();
+      }
+      queryParameters.forEach(this::query);
+    }
+    ```
+
+
+
+
+
 ## 服务雪崩
 
 推荐阅读：[服务雪崩效应](https://blog.csdn.net/syilt/article/details/95035435)

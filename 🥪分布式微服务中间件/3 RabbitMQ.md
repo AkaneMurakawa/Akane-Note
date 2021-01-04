@@ -124,7 +124,7 @@ spring.rabbitmq.listener.simple.prefetch=5
 
 ### TTL消息/队列
 
-`TTL`是Time To Live的缩写，也就是生存时间的意思，`RabbitMQ`支持消息的过期时间，在消息发送时可以进行指定，也支持队列的过期时间，从消息入队列开始计算，只要超过了队列的超时时间配置，那么**消息会自动的清除**。
+`TTL`是Time To Live的缩写，也就是生存时间的意思，`RabbitMQ`支持消息的过期时间，在消息发送时可以进行指定，也支持队列的过期时间，从消息入队列开始计算，只要超过了队列的超时时间配置，那么**消息会自动的清除**。常用于定义延时队列。
 
 
 
@@ -153,13 +153,13 @@ https://www.cnblogs.com/he-erduo/p/13605911.html
 - **TTL过期**
 - 要进入的队列达到最大长度
 
-这三种情况，就可以判定一条消息死了，**这种消息如果我们没有做处理，它就会被自动删除。**
+这三种情况，就可以判定一条消息死了，**这种消息如果没有做处理，它就会被自动删除。**
 
 设置了一个队列中的消息死亡后的去处，就等于消息死亡后给它不把它删掉而是做一次**转发**，发到其他`Exchange`去。
 
 
 
-设置参数：x-dead-letter-exchange
+设置参数：x-dead-letter-exchange、x-dead-letter-routing-key
 
 ```java
     // DLX队列示例
@@ -177,6 +177,8 @@ https://www.cnblogs.com/he-erduo/p/13605911.html
 ### 延时队列
 
 RabbitMQ中没有延时队列，但是**TTL+DLX**就能组成一个延时队列。
+
+**定义死信队列DLX，并设置过期时间TTL，将消息发送到死信队列，即为发送到延时队列**（除此之外，还需对死信队列进行处理，比如消息重试，否则过期会自动清除）
 
 
 
@@ -289,6 +291,37 @@ channel.basicAck(deliveryTag, false);
 
 
 
+### 自定义队列监听- ChannelAwareMessageListener
+
+> ```
+> A message listener that is aware of the Channel on which the message was received.
+> ```
+
+实现ChannelAwareMessageListener
+
+```java
+    /**
+     * 自定义创建队列监听
+     */
+    private void listenerContainer(ConnectionFactory connectionFactory, List<String> listenQueue, int concurrentConsumer, int maxConcurrentConsumer, int prefetchCount, Map<String, Object> consumerArguments, ChannelAwareMessageListener listener) {
+        for (String queue : listenQueue) {
+            SimpleMessageListenerContainer container = SpringBeanUtil.registerBean(queue, SimpleMessageListenerContainer.class, connectionFactory);
+            container.setQueues(AbstractMqConfig.getQueueMap().get(queue));
+            container.setConcurrentConsumers(concurrentConsumer);
+            container.setMaxConcurrentConsumers(maxConcurrentConsumer);
+            container.setPrefetchCount(prefetchCount);
+            container.setConsumerArguments(consumerArguments);
+            container.setAcknowledgeMode(AcknowledgeMode.MANUAL);
+            container.setMessageListener(listener);
+            container.start();
+        }
+    }
+```
+
+
+
 ### 如何保证消息的可靠性投递
 
-等消息处理结束后再执行消息手动确认，消费者消费后再手动确认 ，超过一定重试次数后，丢到死信队列。
+使用RabbitMQ的basicAck手动确认消息，等消息处理结束后再执行消息手动确认，消费者消费后再手动确认。执行失败则丢到死信队列(**自动过期**)，`channel.basicReject(deliveryTag, false)`
+
+超过一定重试次数后，不再进行重试，而是进行告警通知，例如钉钉。
