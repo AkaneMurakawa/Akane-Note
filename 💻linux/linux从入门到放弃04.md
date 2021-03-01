@@ -7,19 +7,7 @@ comments: true
 
 # linux从入门到放弃——04入土篇之常用命令
 
-这一次我不先打算说点什么，就是放一篇常用的命令，我会在后面的文章说以下常用的命令。当然linux的命令很多不可能全部说完，也不可能花很多时间记住全部，说多了也不会看。我觉得这个是慢慢积
-
-累的，就像背单词我们老是天天被没意思，但是如果我们在看视频或者文章中慢慢积累就没有那么累了，当然我不是在说我英语好，我的英语其实烂的不行。但是遇到不会的单词就是马上查，然后读懂句
-
-子。大家在后面学习的时候如果不记得了就可以回头看看这篇文章。有的人就说了人的记忆是有限的，鱼的记忆只有七秒。这个记忆就有点类似我们的硬盘，存储的东西是有限的，虽然我们很想把老师的
-
-视频存在硬盘里，想学习知识的时候就拿出来欣赏一下，但是空间却是已经限制的东西。那么怎么办，只要我们记得在哪里下载就可以了，然后把下载地址存在硬盘比把视频放在硬盘能够节约很多空间，
-
-在如今硬盘也成了一种消费品，还是要好好珍惜空间，备份一下。有人说你看我这脑子还要记点什么女主播啊，出装顺序啊，根本记不住那么多。因为就是说嘛linux下的命令真的很多，我们不可能就算全
-
-都记得，那不记得怎么办，能快速查到不就可以了，我们知道哪里能够快速找不就得了，干嘛非得像英文那样背下来，常用的命令记不住怎么办。多用几次就不会忘记了，就像我们每次晚上都不会忘记打
-
-开直播平台看直播，打开手机开qq那样，就是用了习惯了就不会忘记了。然后很多命令参数，我们可以通过"man"来查看帮助文档，在外面遇到问题找警察，在linux遇到找男人，老哥稳。
+这一次我不先打算说点什么，就是放一篇常用的命令，我会在后面的文章说以下常用的命令。当然linux的命令很多不可能全部说完，也不可能花很多时间记住全部，说多了也不会看。我觉得这个是慢慢积累的，就像背单词我们老是天天被没意思，但是如果我们在看视频或者文章中慢慢积累就没有那么累了，当然我不是在说我英语好，我的英语其实烂的不行。但是遇到不会的单词就是马上查，然后读懂句子。大家在后面学习的时候如果不记得了就可以回头看看这篇文章。有的人就说了人的记忆是有限的，鱼的记忆只有七秒。这个记忆就有点类似我们的硬盘，存储的东西是有限的，虽然我们很想把老师的视频存在硬盘里，想学习知识的时候就拿出来欣赏一下，但是空间却是已经限制的东西。那么怎么办，只要我们记得在哪里下载就可以了，然后把下载地址存在硬盘比把视频放在硬盘能够节约很多空间，在如今硬盘也成了一种消费品，还是要好好珍惜空间，备份一下。有人说你看我这脑子还要记点什么女主播啊，出装顺序啊，根本记不住那么多。因为就是说嘛linux下的命令真的很多，我们不可能就算全都记得，那不记得怎么办，能快速查到不就可以了，我们知道哪里能够快速找不就得了，干嘛非得像英文那样背下来，常用的命令记不住怎么办。多用几次就不会忘记了，就像我们每次晚上都不会忘记打开直播平台看直播，打开手机开qq那样，就是用了习惯了就不会忘记了。然后很多命令参数，我们可以通过"man"来查看帮助文档，在外面遇到问题找警察，在linux遇到找男人，老哥稳。
 
 ### 一、通用命令
 ```
@@ -141,64 +129,64 @@ ps: ps -e 或 ps -o pid,ppid,session,tpgid, comm (其中session显示的sessioni
 查看文件由哪个软件包提供: dpkg -S filename
 另外 dpkg还有 dselect和aptitude 两个frontend.
 2. apt
-  安装: apt-get install packs
-  apt-get update : 更新源
-  apt-get upgrade: 升级系统。
-  apt-get dist-upgrade: 智能升级。安装新软件包,删除废弃的软件包
-  apt-get -f install ： -f == --fix broken 修复依赖
-  apt-get autoremove: 自动删除无用的软件
-  apt-get remove packages :删除软件
-  apt-get remove package --purge 删除包并清除配置文件
-  清除所以删除包的残余配置文件: dpkg -l |grep ^rc|awk '{print $2}' |tr ["/n"] [" "]|sudo xargs dpkg -P
-  安装软件时候包的临时存放目录 : /var/cache/apt/archives
-  清除该目录: apt-get clean
-  清除该目录的旧版本的软件缓存: apt-get autoclean
-  查询软件some的依赖包： apt-cache depends some
-  查询软件some被哪些包依赖: apt-get rdepends some
-  搜索软件: apt-cache search name|regexp
-  查看软件包的作用：apt-cache show package
-  查看一个软件的编译依赖库: apt-cache showsrc packagename|grep Build-Depends
-  下载软件的源代码 : apt-get source packagename (注: sources.list 中应该有 deb-src 源)
-  安装软件包源码的同时, 安装其编译环境 :apt-get build-dep packagename (有deb-src源)
-  如何将本地光盘加入安装源列表: apt-cdrom add
+    安装: apt-get install packs
+    apt-get update : 更新源
+    apt-get upgrade: 升级系统。
+    apt-get dist-upgrade: 智能升级。安装新软件包,删除废弃的软件包
+    apt-get -f install ： -f == --fix broken 修复依赖
+    apt-get autoremove: 自动删除无用的软件
+    apt-get remove packages :删除软件
+    apt-get remove package --purge 删除包并清除配置文件
+    清除所以删除包的残余配置文件: dpkg -l |grep ^rc|awk '{print $2}' |tr ["/n"] [" "]|sudo xargs dpkg -P
+    安装软件时候包的临时存放目录 : /var/cache/apt/archives
+    清除该目录: apt-get clean
+    清除该目录的旧版本的软件缓存: apt-get autoclean
+    查询软件some的依赖包： apt-cache depends some
+    查询软件some被哪些包依赖: apt-get rdepends some
+    搜索软件: apt-cache search name|regexp
+    查看软件包的作用：apt-cache show package
+    查看一个软件的编译依赖库: apt-cache showsrc packagename|grep Build-Depends
+    下载软件的源代码 : apt-get source packagename (注: sources.list 中应该有 deb-src 源)
+    安装软件包源码的同时, 安装其编译环境 :apt-get build-dep packagename (有deb-src源)
+    如何将本地光盘加入安装源列表: apt-cdrom add
 3. 系统命令:
-  查看内核版本： uname -a
-  查看ubuntu 版本: cat /etc/issue
-  查看网卡状态 : ethtool eth0
-  查看内存,cpu的信息： cat /proc/meminfo ; cat /proc/cpuinfo(/proc下面的有很多系统信息)
-  打印文件系统空间使用情况: df -h
-  查看硬盘分区情况: fdisk -l
-  产看文件大小: du -h filename;(du:disk user)
-  查看目录大小： du -hs dirname ; du -h dirname是查看目录下所有文件的大小
-  查看内存的使用： free -m|-g|-k
-  查看进程： ps -e 或ps -aux -->显示用户
-  杀掉进程: kill pid
-  强制杀掉： killall -9 processname
+    查看内核版本： uname -a
+    查看ubuntu 版本: cat /etc/issue
+    查看网卡状态 : ethtool eth0
+    查看内存,cpu的信息： cat /proc/meminfo ; cat /proc/cpuinfo(/proc下面的有很多系统信息)
+    打印文件系统空间使用情况: df -h
+    查看硬盘分区情况: fdisk -l
+    产看文件大小: du -h filename;(du:disk user)
+    查看目录大小： du -hs dirname ; du -h dirname是查看目录下所有文件的大小
+    查看内存的使用： free -m|-g|-k
+    查看进程： ps -e 或ps -aux -->显示用户
+    杀掉进程: kill pid
+    强制杀掉： killall -9 processname
 4. 网络相关：
-  配置 ADSL: sudo pppoeconf
-  ADSL手工拨号: sudo pon dsl-provider
-  激活 ADSL : sudo /etc/ppp/pppoe_on_boot
-  断开 ADSL: sudo poff
-  根据IP查网卡地址: arping IP地址
-  产看本地网络信息（包括ip等）: ifconfig | ifconfig eth0
-  查看路由信息: netstat -r
-  关闭网卡： sudo ifconfig eth0 down
-  启用网卡： sudo ifconfig eth0 up
-  添加一个服务: sudo update-rc.d 服务名 defaults 99
-  删除一个服务: sudo update-rc.d 服务名 remove
-  临时重启一个服务: /etc/init.d/服务名 restart
-  临时关闭一个服务: /etc/init.d/服务名 stop
-  临时启动一个服务: /etc/init.d/服务名 start
-  控制台下显示中文: sudo apt-get install zhcon
-  查找某个文件: whereis filename 或 find 目录 -name 文件名
-  通过ssh传输文件
-  scp -rp /path/filename username@remoteIP:/path #将本地文件拷贝到服务器上
-  scp -rp username@remoteIP:/path/filename /path #将远程文件从服务器下载到本地
+    配置 ADSL: sudo pppoeconf
+    ADSL手工拨号: sudo pon dsl-provider
+    激活 ADSL : sudo /etc/ppp/pppoe_on_boot
+    断开 ADSL: sudo poff
+    根据IP查网卡地址: arping IP地址
+    产看本地网络信息（包括ip等）: ifconfig | ifconfig eth0
+    查看路由信息: netstat -r
+    关闭网卡： sudo ifconfig eth0 down
+    启用网卡： sudo ifconfig eth0 up
+    添加一个服务: sudo update-rc.d 服务名 defaults 99
+    删除一个服务: sudo update-rc.d 服务名 remove
+    临时重启一个服务: /etc/init.d/服务名 restart
+    临时关闭一个服务: /etc/init.d/服务名 stop
+    临时启动一个服务: /etc/init.d/服务名 start
+    控制台下显示中文: sudo apt-get install zhcon
+    查找某个文件: whereis filename 或 find 目录 -name 文件名
+    通过ssh传输文件
+    scp -rp /path/filename username@remoteIP:/path #将本地文件拷贝到服务器上
+    scp -rp username@remoteIP:/path/filename /path #将远程文件从服务器下载到本地
 5. 压缩:
-  解压缩 a.tar.gz: tar zxvf a.tar.gz
-  解压缩 a.tar.bz2: tar jxvf a.tar.bz2
-  压缩aaa bbb目录为xxx.tar.gz: tar zcvf xxx.tar.gz aaa bbb
-  压缩aaa bbb目录为xxx.tar.bz2: tar jcvf xxx.tar.bz2 aaa bbb[6] 
+    解压缩 a.tar.gz: tar zxvf a.tar.gz
+    解压缩 a.tar.bz2: tar jxvf a.tar.bz2
+    压缩aaa bbb目录为xxx.tar.gz: tar zcvf xxx.tar.gz aaa bbb
+    压缩aaa bbb目录为xxx.tar.bz2: tar jcvf xxx.tar.bz2 aaa bbb[6] 
 6. Nautilus：
      特殊 URI 地址
      computer:/// - 全部挂载的设备和网络

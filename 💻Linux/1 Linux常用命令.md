@@ -4,7 +4,7 @@
 
 分用户态和内核态
 
-![image-20201129114311825](H:\akane-note\💻linux\images\image-20201129114311825.png)
+![image-20201129114311825](images\image-20201129114311825.png)
 
 
 
@@ -951,7 +951,7 @@ https://www.cnblogs.com/rexcheny/p/9382396.html
 >        many users are currently logged on, and the system load averages for the past 1, 5, and 15 minutes.
 >
 >        This is the same information contained in the header line displayed by w(1).
->         
+>             
 >        System load averages is the average number of processes that are either in a runnable or uninterruptable state.   A  process
 >        in  a  runnable  state is either using the CPU or waiting to use the CPU.  A process in uninterruptable state is waiting for
 >        some I/O access, eg waiting for disk.  The averages are taken over the three time intervals.  Load averages are not  normal‐
