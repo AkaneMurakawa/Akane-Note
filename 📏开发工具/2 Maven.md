@@ -8,8 +8,6 @@ maven仓库：https://mvnrepository.com/
 
 
 
-
-
 ## 认识Maven
 
 Maven是一个项目构建工具，在 Maven 中通过 POM(解释：Project Object Model) 项目对象模型的概念来管理项目。在 Maven 中每个项目都相当于**一个对象**，对象（项目）之间可以**依赖、继承、聚合**。
