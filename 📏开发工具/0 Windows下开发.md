@@ -1,4 +1,4 @@
-# Windows下的开发
+# Windows下搭建Linux虚拟容器开发环境
 
 ## 安装虚拟机
 
@@ -32,10 +32,13 @@ sudo vim /etc/ssh/sshd_config
 
 /PermitRootLogin 
 # 按照i，增加一行，填写 PermitRootLogin yes
-: wq!
+按ESC 输入: wq!
 
 重启ssh
 service ssh restart
+
+修改root密码
+sudo passwd root
 ```
 
 
@@ -52,7 +55,7 @@ service ssh restart
 
 ```bash
 #首次启动
-$ docker run --name mysql -d -p 3306:3306 -e MYSQL_ROOT_PASSWORD=admin -d mysql:5.7
+$ docker run --name mysql -d -p 3306:3306 -e MYSQL_ROOT_PASSWORD=admin mysql:5.7
 $ docker run --name redis -d -p 6379:6379 redis redis-server --appendonly yes
 $ docker run --name mongo -d -p 27017:27017 -e MONGO_INITDB_ROOT_USERNAME=admin -e MONGO_INITDB_ROOT_PASSWORD=admin mongo
 $ docker run --name nginx -d -p 8080:80 nginx:1.19.7
@@ -61,9 +64,9 @@ $ docker run --name nginx -d -p 8080:80 nginx:1.19.7
 $ docker start mysql
 $ docker start redis
 $ docker start mongo
-$ docker start nginxb
+$ docker start nginx
 
-# 虚拟机安装redic客户端
+# 虚拟机安装redis客户端
 $ sudo apt install redis-tools
 ```
 
